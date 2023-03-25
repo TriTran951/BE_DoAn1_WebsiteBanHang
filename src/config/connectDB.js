@@ -1,6 +1,18 @@
-const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://thanhtritran951:t4Ss9pNINxy8UKVl@cluster0.8edyn9k.mongodb.net/test', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-module.exports = mongoose
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const uri = process.env.MONGODB_URI;
+const connectDb = async () => {
+    try {
+        await mongoose.connect(uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connect Db succesfully');
+    } catch (error) {
+        console.log('Connect Db fail');
+    }
+};
+
+export { connectDb };

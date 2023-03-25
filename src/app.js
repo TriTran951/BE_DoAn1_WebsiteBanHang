@@ -1,27 +1,47 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-const cors = require('cors');
-const Router = require('./router');
-const cookie = require('cookie-parser');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import cookie from 'cookie-parser';
+import Router from './router/index.js';
+import dotenv from 'dotenv';
+dotenv.config();
+import { connectDb } from './config/connectDB.js';
 
-//parser
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+connectDb()
+    .then(() => {
+        bootServer();
+    })
+    .catch((error) => {
+        console.log(error);
+        process.exit();
+    });
 
-app.use(
-    cors({
-        origin: [process.env.hostFE],
-        optionsSuccessStatus: 200,
-    }),
-);
-app.use(cookie());
+const bootServer = () => {
+    const app = express();
 
-//router api
-app.use('/api', Router);
+    //parser
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-//start
-app.listen(process.env.PORT || 3150, () => {
-    console.log(`serve listen in localhost ${3150}`);
-});
+    app.use(
+        cors({
+            origin: [process.env.hostFE],
+            optionsSuccessStatus: 200,
+        }),
+    );
+    app.use(cookie());
+    //router api
+    app.use('/api', Router);
+
+    //handle error url
+    app.use(function (req, res, next) {
+        if (req.accepts('json')) {
+            res.json({ error: 'Not found' });
+            return;
+        }
+        res.type('txt').send('Not found');
+    });
+    //start
+    app.listen(process.env.PORT || 3150, () => {
+        console.log(`serve run in ${process.env.baseURL}:${process.env.PORT}`);
+    });
+};
