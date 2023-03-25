@@ -1,6 +1,7 @@
-const mongoose = require('../config/connectDB.js')
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-const userSchema = mongoose.Schema(
+const userSchema = new Schema(
     {
         Email: String,
         Matkhau: String,
@@ -8,18 +9,17 @@ const userSchema = mongoose.Schema(
         Cccd: String,
         GioiTinh: Boolean,
         NgaySinh: Date,
+        ChucVu: String,
         HinhAnh: String,
         TrangThai: String,
         Sdt: String,
         DiaChi: String,
         SoTienDaTra: Number,
-        MaChucVu: {
-            
-        }
+        MaChucVu: { type: mongoose.Schema.Types.ObjectId, ref: 'chucvu' },
+    },
+    { collection: 'user' },
+);
 
-    }, { collection: 'users' }
-)
+const userModel = mongoose.model('user', userSchema);
 
-const userModel = mongoose.model('users', userSchema)
-
-module.exports = userModel
+export default userModel;

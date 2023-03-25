@@ -4,7 +4,7 @@ import cookie from 'cookie-parser';
 import Router from './router/index.js';
 import dotenv from 'dotenv';
 dotenv.config();
-import { connectDb } from './config/connectDB.js';
+import connectDb from './config/connectDB.js';
 
 connectDb()
     .then(() => {
@@ -42,6 +42,6 @@ const bootServer = () => {
     });
     //start
     app.listen(process.env.PORT || 3150, () => {
-        console.log(`serve run in ${process.env.baseURL}:${process.env.PORT}`);
+        console.log(`server run in ${process.env.baseURL}:${process.env.PORT}`);
     });
 };
