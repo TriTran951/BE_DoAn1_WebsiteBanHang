@@ -12,4 +12,4 @@ const userSchema = mongoose.Schema(
 
 const thuonghieu = mongoose.model('thuonghieu', userSchema);
 
-module.exports = thuonghieu;
+export default thuonghieu;
