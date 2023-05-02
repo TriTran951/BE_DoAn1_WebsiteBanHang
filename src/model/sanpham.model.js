@@ -16,4 +16,4 @@ const userSchema = mongoose.Schema(
 
 const sanpham = mongoose.model('sanpham', userSchema);
 
-module.exports = sanpham;
+export default sanpham;
