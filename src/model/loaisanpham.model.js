@@ -12,4 +12,4 @@ const userSchema = mongoose.Schema(
 
 const loaisanpham = mongoose.model('loaisanpham', userSchema);
 
-module.exports = loaisanpham;
+export default loaisanpham;
