@@ -3,16 +3,18 @@ const { Schema } = mongoose;
 
 const userSchema = mongoose.Schema(
     {
-        MaLoaiSanPham: { type: mongoose.Schema.Types.ObjectId, ref: 'loaisanpham' },
+        MaSanPham: { type: mongoose.Schema.Types.ObjectId, ref: 'sanpham' },
         MaThongSo: { type: mongoose.Schema.Types.ObjectId, ref: 'thongso' },
         MoTa: String,
         TrangThai: String,
-        GiaTri: Number,
+        GiaTri: String,
         ThongSoPhienBan: String,
     },
     { collection: 'sanpham_thongso' },
 );
 
+userSchema.index({ MaSanPham: 1, MaThongSo: 1 });
+
 const sanpham_thongso = mongoose.model('sanpham_thongso', userSchema);
 
-module.exports = sanpham_thongso;
+export default sanpham_thongso;

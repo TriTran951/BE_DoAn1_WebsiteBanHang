@@ -14,6 +14,12 @@ const sanphamSchema = mongoose.Schema(
         SoLuongHangTon: Number,
         GiaBan: Number,
         TrangThai: String,
+        SanPhamLienQuan: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'sanpham',
+            },
+        ],
     },
     { collection: 'sanpham' },
 );

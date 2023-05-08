@@ -1,8 +1,8 @@
 import Express from 'express';
 const router = Express.Router();
 
-import client from '../controller/client.Controller.js';
+import client from '../controller/client.controller.js';
 
-router.get('/exec', client.Exec);
-
+router.get('/addProduct', client.addProduct);
+//addProduct, addRelatedProduct
 export default router;
