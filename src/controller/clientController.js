@@ -83,6 +83,9 @@ let EarphoneController = async (req, res) => {
         });
     }
 };
+
+let getProduct = async (req, res) => {};
+
 export default {
     HomeController,
     SmartPhoneController,
@@ -90,4 +93,5 @@ export default {
     TabletController,
     EarphoneController,
     WatchController,
+    getProduct,
 };

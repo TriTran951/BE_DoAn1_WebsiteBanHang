@@ -9,7 +9,6 @@ router.get('/laptop', clientController.LaptopController);
 router.get('/tablet', clientController.TabletController);
 router.get('/dongho', clientController.WatchController);
 router.get('/tainghe', clientController.EarphoneController);
-
-router.post('/adddata');
+router.post('getProduct', clientController.getProduct);
 
 export default router;

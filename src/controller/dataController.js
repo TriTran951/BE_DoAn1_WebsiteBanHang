@@ -8,7 +8,6 @@ import LoaisanphamModel from '../model/loaisanpham.model.js';
 import Sanpham_thongsoModel from '../model/sanpham_thongso.model.js';
 import ThongsoModel from '../model/thongso.model.js';
 import PhienbansanphamModel from '../model/phieubansanpham.model.js';
-import sanpham from '../model/sanpham.model.js';
 
 // import Pbsp_thongsoModel from '../model/pbsp_thongso.model.js';
 
