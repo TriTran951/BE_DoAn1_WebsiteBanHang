@@ -1,5 +1,9 @@
 import SanPhamModel from '../model/sanpham.model.js';
-import LoaiSanPhamModel from '../model/loaisanpham.model.js';
+import ThuonghieuModel from '../model/thuonghieu.model.js';
+import LoaisanphamModel from '../model/loaisanpham.model.js';
+import Sanpham_thongsoModel from '../model/sanpham_thongso.model.js';
+import ThongsoModel from '../model/thongso.model.js';
+import PhienbansanphamModel from '../model/phieubansanpham.model.js';
 
 import mongoose from 'mongoose';
 
@@ -59,6 +63,35 @@ let test = async () => {
         .distinct('MaThuongHieu');
     return test;
 };
+let getProductbyId = async (id) => {
+    try {
+        let product = await SanPhamModel.findById(id).populate({
+            path: 'SanPhamLienQuan',
+            select: '_id TenSanPham HinhAnh GiaBan',
+        });
+
+        //thông số
+        let sp_thongso = await Sanpham_thongsoModel.find({ MaSanPham: product._id }).populate(
+            'MaThongSo',
+            'TenThongSo GiaTri',
+        );
+        let thongso = sp_thongso.map((item) => {
+            return {
+                TenThongSo: item.MaThongSo.TenThongSo,
+                GiaTri: item.GiaTri,
+            };
+        });
+
+        //phiên bản
+        let phienban = await PhienbansanphamModel.find({ MaSanPham: '6458c3fbd1923803f751d999' });
+        if (typeof phienban === 'undefined') phienban = [];
+        return { ...product.toObject(), thongso, phienban };
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+};
+
 export default {
     getSmartphone,
     getEarphone,
@@ -66,4 +99,5 @@ export default {
     getTablet,
     getWatch,
     test,
+    getProductbyId,
 };

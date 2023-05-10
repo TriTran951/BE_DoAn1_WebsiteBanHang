@@ -84,7 +84,19 @@ let EarphoneController = async (req, res) => {
     }
 };
 
-let getProduct = async (req, res) => {};
+let getProduct = async (req, res) => {
+    try {
+        let id = req.body.id;
+        let prd = 'asd';
+        prd = await productService.getProductbyId(id);
+        res.status(404).send(JSON.stringify(prd));
+    } catch (error) {
+        console.log('get product by id fail');
+        res.status(404).send({
+            message: 'fail',
+        });
+    }
+};
 
 export default {
     HomeController,
