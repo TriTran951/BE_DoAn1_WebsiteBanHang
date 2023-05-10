@@ -12,4 +12,4 @@ const userSchema = mongoose.Schema(
 
 const pbsp_thongso = mongoose.model('pbsp_thongso', userSchema);
 
-module.exports = pbsp_thongso;
+export default pbsp_thongso;

@@ -3,7 +3,10 @@ const { Schema } = mongoose;
 
 const userSchema = mongoose.Schema(
     {
-        TenTongSo: String,
+        TenThongSo: {
+            type: String,
+            index: true,
+        },
         MoTa: String,
         TrangThai: String,
         LoaiDuLieu: String,
@@ -14,4 +17,4 @@ const userSchema = mongoose.Schema(
 
 const thongso = mongoose.model('thongso', userSchema);
 
-module.exports = thongso;
+export default thongso;

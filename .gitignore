@@ -11,7 +11,7 @@ react-axios-example
 
 # production
 /build
-
+test/
 # misc
 .DS_Store
 .env.local

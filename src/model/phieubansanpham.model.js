@@ -9,11 +9,13 @@ const userSchema = mongoose.Schema(
         MoTa: String,
         GiaBan: Number,
         SoLuongHangTon: Number,
-        TrangThai: Number,
+        TrangThai: String,
     },
     { collection: 'phienbansanpham' },
 );
 
+userSchema.index({ MaSanPham: 1 });
+
 const phienbansanpham = mongoose.model('phienbansanpham', userSchema);
 
-module.exports = phienbansanpham;
+export default phienbansanpham;
