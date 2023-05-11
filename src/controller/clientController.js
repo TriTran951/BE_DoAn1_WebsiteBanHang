@@ -90,7 +90,7 @@ let getProduct = async (req, res) => {
         console.log(id);
         let prd = 'asd';
         prd = await productService.getProductbyId(id);
-        res.status(404).send(JSON.stringify(prd));
+        res.status(200).send(JSON.stringify(prd));
     } catch (error) {
         console.log('get product by id fail');
         res.status(404).send({
