@@ -6,6 +6,7 @@ import ThongsoModel from '../model/thongso.model.js';
 import PhienbansanphamModel from '../model/phieubansanpham.model.js';
 
 import mongoose from 'mongoose';
+import sanpham from '../model/sanpham.model.js';
 
 let getSmartphone = async () => {
     let phone = await SanPhamModel.find(
@@ -83,7 +84,7 @@ let getProductbyId = async (id) => {
         });
 
         //phiên bản
-        let phienban = await PhienbansanphamModel.find({ MaSanPham: '6458c3fbd1923803f751d999' });
+        let phienban = await PhienbansanphamModel.find({ MaSanPham: product._id });
         if (typeof phienban === 'undefined') phienban = [];
         return { ...product.toObject(), thongso, phienban };
     } catch (error) {

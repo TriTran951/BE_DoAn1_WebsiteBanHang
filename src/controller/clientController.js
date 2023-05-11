@@ -87,6 +87,7 @@ let EarphoneController = async (req, res) => {
 let getProduct = async (req, res) => {
     try {
         let id = req.body.id;
+        console.log(id);
         let prd = 'asd';
         prd = await productService.getProductbyId(id);
         res.status(404).send(JSON.stringify(prd));
