@@ -8,11 +8,11 @@ let HomeController = async (req, res) => {
         let laptop = await productService.getLaptop();
         let tablet = await productService.getTablet();
         let product = [];
-        product[0] = phone.slice(0, 50);
-        product[1] = laptop.slice(0, 50);
-        product[2] = tablet.slice(0, 50);
-        product[3] = watch.slice(0, 50);
-        product[4] = earphone.slice(0, 50);
+        product[0] = phone.slice(0, 20);
+        product[1] = laptop.slice(0, 20);
+        product[2] = tablet.slice(0, 20);
+        product[3] = watch.slice(0, 20);
+        product[4] = earphone.slice(0, 20);
         // for (let i = 0; i < product.length; i++) {
         //     for (let j = 0; j < product[i].length; j) {
         //         product[i][j].rating = Math.floor(Math.random() * 3) + 3;
@@ -87,7 +87,6 @@ let EarphoneController = async (req, res) => {
 let getProduct = async (req, res) => {
     try {
         let id = req.body.id;
-        console.log(id);
         let prd = 'asd';
         prd = await productService.getProductbyId(id);
         res.status(200).send(JSON.stringify(prd));
