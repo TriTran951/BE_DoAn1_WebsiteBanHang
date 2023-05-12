@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema(
     {
         MaSanPham: { type: mongoose.Schema.Types.ObjectId, ref: 'sanpham' },
         TenPhienBan: String,
-        HinhAnh: String,
+        ImgL: String,
+        ImgS: String,
         MoTa: String,
         GiaBan: Number,
         SoLuongHangTon: Number,

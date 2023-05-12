@@ -16,8 +16,8 @@ let addProduct = async (req, res, next) => {
         //read file excel
         const workbook = XLSX.readFile('./src/test/ProductFinal.xlsx');
         //get sheet by sheet name
-        //sheet DienThoaiFull, TaiNgheFull, LapTopFull, TabletFull, DongHoFull
-        const worksheet = workbook.Sheets['DongHoFull'];
+        //sheet Dienthoai   , Laptop, Tainghe, Dongho, Tablet
+        const worksheet = workbook.Sheets['Tablet'];
         //get all data fropm sheet
         let data = XLSX.utils.sheet_to_json(worksheet, {
             header: ['name', 'price', 'image', 'link', 'brand', 'thongso', 'version', 'lienquan'],
@@ -26,7 +26,7 @@ let addProduct = async (req, res, next) => {
         // //get all brand
         let brands = await ThuonghieuModel.find();
         let thongsos = await ThongsoModel.find();
-        let loaisanpham = await LoaisanphamModel.findOne({ TenLoaiSanPham: 'Watch' });
+        let loaisanpham = await LoaisanphamModel.findOne({ TenLoaiSanPham: 'Tablet' });
 
         for (let i = 0; i < data.length; i++) {
             //parse data
@@ -92,7 +92,8 @@ let addProduct = async (req, res, next) => {
                 let ver = await PhienbansanphamModel.create({
                     MaSanPham: sanpham._id,
                     TenPhienBan: data[i].version[j].color,
-                    HinhAnh: data[i].version[j].image,
+                    ImgL: data[i].version[j].imageLarge,
+                    ImgS: data[i].version[j].imageSmall,
                     MoTa: '',
                     GiaBan: data[i].version[j].price.replace(/\./g, '').replace('₫', ''),
                     SoLuongHangTon: '10',
@@ -126,8 +127,10 @@ let addRelatedProduct = async (req, res, next) => {
                     let sanpham = await SanphamModel.findOne({ _id: data[i]._id });
                     for (let j = 0; j < data[i].lienquan.length; j++) {
                         let related = data.find((obj) => obj.link === data[i].lienquan[j].link);
-
                         if (typeof related !== 'undefined') {
+                            let relatedProduct = await SanphamModel.findById(related._id);
+                            relatedProduct.TenHienThi = data[i].lienquan[j].nameLink;
+                            await relatedProduct.save();
                             sanpham.SanPhamLienQuan.push(related._id);
                             //console.log(related._id);
                         }
@@ -147,15 +150,18 @@ let addRelatedProduct = async (req, res, next) => {
     }
 };
 
-let find = async (req, res, next) => {
-    let sanpham = await SanphamModel.find({
-        MaLoaiSanPham: '644e90c96b5538959065ad6c',
-    });
-
-    return res.send('ok');
+let test = async (req, res, next) => {
+    try {
+        let sanpham = await SanphamModel.findOne({ MaLoaiSanPham: '644f5733f1488433820db285' });
+        console.log('done');
+        res.status(200).send(JSON.stringify(sanpham));
+    } catch (error) {
+        console.log(error);
+        return res.status(404).send('fail');
+    }
 };
 
-export default { addProduct, addRelatedProduct, find };
+export default { addProduct, addRelatedProduct, test };
 
 // import XLSX from 'xlsx';
 // const workbook = XLSX.readFile('./product.xlsx')

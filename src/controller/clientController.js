@@ -87,11 +87,13 @@ let EarphoneController = async (req, res) => {
 let getProduct = async (req, res) => {
     try {
         let id = req.body.id;
-        let prd = 'asd';
-        prd = await productService.getProductbyId(id);
-        res.status(200).send(JSON.stringify(prd));
+        console.log(id);
+        let prod = await productService.getProductbyId(id);
+
+        res.status(200).send(JSON.stringify(prod));
     } catch (error) {
         console.log('get product by id fail');
+        console.log(error);
         res.status(404).send({
             message: 'fail',
         });

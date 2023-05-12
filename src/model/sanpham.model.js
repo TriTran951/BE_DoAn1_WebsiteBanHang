@@ -9,6 +9,7 @@ const sanphamSchema = mongoose.Schema(
             type: String,
             index: true,
         },
+        TenHienThi: String,
         HinhAnh: String,
         MoTa: String,
         SoLuongHangTon: Number,
@@ -23,6 +24,9 @@ const sanphamSchema = mongoose.Schema(
     },
     { collection: 'sanpham' },
 );
+
+sanphamSchema.index({ MaLoaiSanPham: 1 });
+sanphamSchema.index({ MaThuongHieu: 1 });
 
 const sanpham = mongoose.model('sanpham', sanphamSchema);
 

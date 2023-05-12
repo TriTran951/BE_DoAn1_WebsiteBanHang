@@ -68,7 +68,7 @@ let getProductbyId = async (id) => {
     try {
         let product = await SanPhamModel.findById(id).populate({
             path: 'SanPhamLienQuan',
-            select: '_id TenSanPham HinhAnh GiaBan',
+            select: '_id TenSanPham TenHienThi HinhAnh GiaBan',
         });
 
         //thông số
