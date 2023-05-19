@@ -1,5 +1,5 @@
 import Express from 'express';
-import XLSX from 'xlsx';
+// import XLSX from 'xlsx';
 import fs from 'fs';
 //import model
 import ThuonghieuModel from '../model/thuonghieu.model.js';
@@ -150,18 +150,18 @@ let addRelatedProduct = async (req, res, next) => {
     }
 };
 
-let test = async (req, res, next) => {
-    try {
-        let sanpham = await SanphamModel.findOne({ MaLoaiSanPham: '644f5733f1488433820db285' });
-        console.log('done');
-        res.status(200).send(JSON.stringify(sanpham));
-    } catch (error) {
-        console.log(error);
-        return res.status(404).send('fail');
-    }
-};
+// let test = async (req, res, next) => {
+//     try {
+//         let sanpham = await SanphamModel.findOne({ MaLoaiSanPham: '644f5733f1488433820db285' });
+//         console.log('done');
+//         res.status(200).send(JSON.stringify(sanpham));
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(404).send('fail');
+//     }
+// };
 
-export default { addProduct, addRelatedProduct, test };
+export default { addProduct, addRelatedProduct };
 
 // import XLSX from 'xlsx';
 // const workbook = XLSX.readFile('./product.xlsx')
