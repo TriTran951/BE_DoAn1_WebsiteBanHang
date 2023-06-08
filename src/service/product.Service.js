@@ -4,6 +4,7 @@ import LoaisanphamModel from '../model/loaisanpham.model.js';
 import Sanpham_thongsoModel from '../model/sanpham_thongso.model.js';
 import ThongsoModel from '../model/thongso.model.js';
 import PhienbansanphamModel from '../model/phieubansanpham.model.js';
+import redis from 'redis';
 
 import mongoose from 'mongoose';
 import sanpham from '../model/sanpham.model.js';
@@ -64,29 +65,59 @@ let test = async () => {
         .distinct('MaThuongHieu');
     return test;
 };
+
 let getProductbyId = async (id) => {
     try {
-        let product = await SanPhamModel.findById(id).populate({
-            path: 'SanPhamLienQuan',
-            select: '_id TenSanPham TenHienThi HinhAnh GiaBan',
+        const redisClient = redis.createClient({
+            url: ' redis://default:VZT1iocfRH6NTGYPi7WgA8K4H61d8ChI@redis-19303.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19303',
         });
 
-        //thông số
-        let sp_thongso = await Sanpham_thongsoModel.find({ MaSanPham: product._id }).populate(
-            'MaThongSo',
-            'TenThongSo GiaTri',
-        );
-        let thongso = sp_thongso.map((item) => {
-            return {
-                TenThongSo: item.MaThongSo.TenThongSo,
-                GiaTri: item.GiaTri,
-            };
-        });
+        await redisClient.connect();
+        const cachedProduct = await redisClient.get(id);
 
-        //phiên bản
-        let phienban = await PhienbansanphamModel.find({ MaSanPham: product._id });
-        if (typeof phienban === 'undefined') phienban = [];
-        return { ...product.toObject(), thongso, phienban };
+        if (cachedProduct) {
+            // Nếu sản phẩm tồn tại trong Redis cache, trả về sản phẩm từ cache
+            console.log('data from cache');
+            return JSON.parse(cachedProduct);
+        } else {
+            // Nếu sản phẩm chưa được lưu trong Redis cache, lấy sản phẩm từ cơ sở dữ liệu
+            let product = await SanPhamModel.findById(id).populate({
+                path: 'SanPhamLienQuan',
+                select: '_id TenSanPham TenHienThi HinhAnh GiaBan',
+            });
+
+            let phienban;
+            let thongso;
+            let result;
+            if (product) {
+                console.log('data from db');
+                //thông số
+                let sp_thongso = await Sanpham_thongsoModel.find({ MaSanPham: product._id }).populate(
+                    'MaThongSo',
+                    'TenThongSo GiaTri',
+                );
+                thongso = sp_thongso.map((item) => {
+                    return {
+                        TenThongSo: item.MaThongSo.TenThongSo,
+                        GiaTri: item.GiaTri,
+                    };
+                });
+                //phiên bản
+                phienban = await PhienbansanphamModel.find({ MaSanPham: product._id });
+                if (typeof phienban === 'undefined') phienban = [];
+                result = { ...product.toObject() };
+
+                // , ...thongso, ...phienban
+                // Lưu sản phẩm vào Redis cache
+                await redisClient.set(product._id.toString(), JSON.stringify(result), {
+                    EX: 300,
+                    NX: true,
+                });
+            } else result = {};
+
+            // Trả về sản phẩm từ cơ sở dữ liệu
+            return result;
+        }
     } catch (error) {
         console.log(error);
         return {};

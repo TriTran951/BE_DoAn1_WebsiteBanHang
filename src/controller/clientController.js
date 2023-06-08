@@ -87,9 +87,7 @@ let EarphoneController = async (req, res) => {
 let getProduct = async (req, res) => {
     try {
         let id = req.body.id;
-        console.log(id);
         let prod = await productService.getProductbyId(id);
-
         res.status(200).send(JSON.stringify(prod));
     } catch (error) {
         console.log('get product by id fail');
