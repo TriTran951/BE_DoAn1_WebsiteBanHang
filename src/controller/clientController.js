@@ -88,11 +88,49 @@ let getProduct = async (req, res) => {
     try {
         let id = req.body.id;
         let prod = await productService.getProductbyId(id);
-        res.status(200).send(JSON.stringify(prod));
+        res.status(200).send(prod);
     } catch (error) {
         console.log('get product by id fail');
         console.log(error);
-        res.status(404).send({
+        res.status(501).send({
+            message: 'fail',
+        });
+    }
+};
+
+let getProductByType = async (req, res) => {
+    try {
+        let typeId = req.body.typeId;
+        let products = await productService.getProductByType(typeId);
+        console.log(`Type: ${typeId}`);
+        return res.status(200).send(products);
+    } catch (error) {
+        res.status(501).send({
+            message: 'fail',
+        });
+    }
+};
+
+let getAllProducts = async (req, res) => {
+    try {
+        let AllProduct = await productService.getAllProducts();
+        res.status(200).send(AllProduct);
+    } catch (error) {
+        res.status(501).send({
+            message: 'fail',
+        });
+    }
+};
+
+let getProductBySpec = async (req, res) => {
+    try {
+        let specId = req.body.specId;
+        let specValue = req.body.specValue;
+        let product = await productService.getProductBySpec(specId, specValue);
+        return res.status(200).send(product);
+    } catch (error) {
+        console.log(error);
+        res.status(501).send({
             message: 'fail',
         });
     }
@@ -106,4 +144,7 @@ export default {
     EarphoneController,
     WatchController,
     getProduct,
+    getProductByType,
+    getAllProducts,
+    getProductBySpec,
 };
