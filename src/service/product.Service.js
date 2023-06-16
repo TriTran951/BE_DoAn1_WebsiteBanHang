@@ -97,7 +97,7 @@ let getProductbyId = async (id) => {
                 //phiên bản
                 phienban = await PhienbansanphamModel.find({ MaSanPham: product._id });
                 if (typeof phienban === 'undefined') phienban = [];
-                result = { ...product.toObject() };
+                result = { ...product.toObject(), ...thongso, ...phienban };
 
                 // , ...thongso, ...phienban
                 // Lưu sản phẩm vào Redis cache
