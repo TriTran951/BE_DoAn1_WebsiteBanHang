@@ -21,9 +21,6 @@ const bootServer = () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
 
-    //redis redis://trantri25092002:GpjMe6AyFz_Ew:d@redis-19303.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19303
-    // Tạo một Redis instance
-
     // Add headers before the routes are defined
     app.use(function (req, res, next) {
         // Website you wish to allow to connect

@@ -10,8 +10,5 @@ router.get('/tablet', clientController.TabletController);
 router.get('/dongho', clientController.WatchController);
 router.get('/tainghe', clientController.EarphoneController);
 router.post('/getProduct', clientController.getProduct);
-router.post('/getProductByType', clientController.getProductByType);
-router.post('/getProctBySpec', clientController.getProductBySpec);
-router.post('/getAllProduct', clientController.getAllProducts);
 
 export default router;

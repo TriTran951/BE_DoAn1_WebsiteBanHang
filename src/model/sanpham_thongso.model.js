@@ -16,7 +16,6 @@ const userSchema = mongoose.Schema(
 userSchema.index({ MaSanPham: 1, MaThongSo: 1 });
 userSchema.index({ MaSanPham: 1 });
 userSchema.index({ MaThongSo: 1 });
-userSchema.index({ MaThongSo: 1, GiaTri: 1 });
 
 const sanpham_thongso = mongoose.model('sanpham_thongso', userSchema);
 
