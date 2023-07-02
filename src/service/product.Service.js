@@ -7,13 +7,21 @@ import PhienbansanphamModel from '../model/phieubansanpham.model.js';
 import redisClient from '../config/redisConnect.js';
 
 let getSmartphone = async () => {
-    let phone = await SanPhamModel.find(
-        {
-            MaLoaiSanPham: '644dd1bc94aaffdfaed2fe3c',
-        },
-        '-SanPhamLienQuan ',
-    );
-    return phone;
+    const cachedPhone = await redisClient.get('644dd1bc94aaffdfaed2fe3c');
+    if (cachedPhone) return JSON.parse(cachedPhone);
+    else {
+        let phone = await SanPhamModel.find(
+            {
+                MaLoaiSanPham: '644dd1bc94aaffdfaed2fe3c',
+            },
+            '-SanPhamLienQuan ',
+        );
+        await redisClient.set('644dd1bc94aaffdfaed2fe3c', JSON.stringify(phone), {
+            EX: 300,
+            NX: true,
+        });
+        return phone;
+    }
 };
 let getLaptop = async () => {
     let laptop = await SanPhamModel.find(
@@ -88,6 +96,7 @@ let getProductbyId = async (id) => {
                     'MaThongSo',
                     'TenThongSo GiaTri',
                 );
+                thongso = null;
                 thongso = sp_thongso.map((item) => {
                     return {
                         TenThongSo: item.MaThongSo.TenThongSo,
@@ -97,10 +106,10 @@ let getProductbyId = async (id) => {
                 //phiên bản
                 phienban = await PhienbansanphamModel.find({ MaSanPham: product._id });
                 if (typeof phienban === 'undefined') phienban = [];
-                result = { ...product.toObject(), ...thongso, ...phienban };
+                result = { ...product.toObject(), thongso, phienban };
+                //console.log(result);
 
-                // , ...thongso, ...phienban
-                // Lưu sản phẩm vào Redis cache
+                //Lưu sản phẩm vào Redis cache
                 await redisClient.set(product._id.toString(), JSON.stringify(result), {
                     EX: 300,
                     NX: true,
