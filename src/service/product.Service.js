@@ -96,7 +96,6 @@ let getProductbyId = async (id) => {
                     'MaThongSo',
                     'TenThongSo GiaTri',
                 );
-                thongso = null;
                 thongso = sp_thongso.map((item) => {
                     return {
                         TenThongSo: item.MaThongSo.TenThongSo,
